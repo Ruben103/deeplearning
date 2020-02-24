@@ -1,0 +1,8 @@
+numpy
+pandas
+tensorflow
+scipy
+keras
+Pillow
+scikit-image
+matplotlib
