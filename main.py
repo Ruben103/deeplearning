@@ -17,6 +17,7 @@ if __name__ == '__main__':
     # data.show_image(piccas[piccas.columns[0]])
 
     model = model.Model('relu')
+    print("model works")
     model.train(piccas)
 
 
