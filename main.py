@@ -9,19 +9,9 @@ import matplotlib.image as mpimg
 
 if __name__ == '__main__':
 
-    # Prepoces data to be smaller
-    # data.resize_images()
     dt = data.Data()
-    piccas = dt.get_data()
-
-    # data.show_image(piccas[piccas.columns[0]])
-
-    model = model.Model('relu')
-    print("model works")
-    model.train(piccas)
-
-
-    # image = rgb2gray(image)
-    # plt.imshow(image,cmap="gray")
+    data, labels = dt.load_data_test()
+    dingutje = model.LeNet()
+    dingutje.model_test(data, labels)
 
     print("BUGSTOPP")

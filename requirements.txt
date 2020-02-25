@@ -6,3 +6,7 @@ keras
 Pillow
 scikit-image
 matplotlib
+argparse
+opencv-python
+imutils
+scikit-learn
