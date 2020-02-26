@@ -33,7 +33,7 @@ class Data():
     def face_extr(self):
         faceCascade = cv2.CascadeClassifier('/home/sharif/Master/deep_learning/deeplearning/'
                                             'haarcascade_frontalface_default.xml')
-        imagePaths = sorted(list(paths.list_images("Train_images/Sharif/")))
+        imagePaths = sorted(list(paths.list_images("new_images/sharif/")))
 
         faces = []
         i = 1
