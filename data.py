@@ -21,8 +21,7 @@ import sys
 
 
 image_path = "Train_images/Sharif/"
-image_paths = ["Train_images/Sharif/", "Train_images/Robin/",  "Train_images/Vincent/", "Train_images/Pelle/",
-               "test_images/Sharif/", "test_images/Robin/",  "test_images/Vincent/", "test_images/Pelle/"]
+image_paths = ["extr_pelle", "extr_robin",  "extr_sharif", "extr_vincent"]
 name_list = ['Sharif', 'Robin', 'Vincent', 'Pelle']
 cols = ['pix' + str(i) for i in range(27648)]
 MAX_SIZE = (256, 192)
@@ -78,7 +77,7 @@ class Data():
 
         # grab the image paths and randomly shuffle them
         # loop over the input images
-        for i in range(8):
+        for i in range(4):
             imagePaths = sorted(list(paths.list_images(image_paths[i])))
             l = len(imagePaths)
             for imagePath in imagePaths:
@@ -92,13 +91,9 @@ class Data():
                 image = img_to_array(image)
                 if(i < 4):
                     train_data.append(image)
-                else:
-                    test_data.append(image)
             # labels list
                 if(i < 4):
                     np.repeat(train_labels.append(i), l)
-                else:
-                    np.repeat(test_labels.append(i-4), l)
 
         # scale the raw pixel intensities to the range [0, 1]
         train_data = np.array(train_data, dtype="float") / 255.0
@@ -109,7 +104,7 @@ class Data():
         shuffle(train_data, train_labels)
         shuffle(test_data, test_labels)
 
-        return train_data, train_labels, test_data, test_labels, width, height
+        return train_data, train_labels, width, height
 
     def load_full_data(self):
 

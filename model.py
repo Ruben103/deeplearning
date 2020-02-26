@@ -68,7 +68,7 @@ class LeNet:
         # return the constructed network architecture
         return model
 
-    def model_test(self, trainX, trainY, testX, testY):
+    def model_test(self, data, labels):
         EPOCHS = 25
         INIT_LR = 1e-3
         BS = 32
