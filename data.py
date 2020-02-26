@@ -31,22 +31,35 @@ class Data():
 
 
     def face_extr(self):
-        faceCascade = cv2.CascadeClassifier("test_images/Sharif_extracted/figure1.xml")
-        image = cv2.imread("test_images/Sharif/")
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        faces = faceCascade.detectMultiScale(
-            gray,
-            scaleFactor=1.1,
-            minNeighbors=5,
-            minSize=(30, 30),
-            flags=cv2.cv.CV_HAAR_SCALE_IMAGE
-        )
+        faceCascade = cv2.CascadeClassifier('/home/sharif/Master/deep_learning/deeplearning/'
+                                            'haarcascade_frontalface_default.xml')
+        imagePaths = sorted(list(paths.list_images("Train_images/Sharif/")))
 
-        print("Found {0} faces!".format(len(faces)))
+        faces = []
+        i = 1
+        for imagepath in imagePaths:
+            image = cv2.imread(imagepath)
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            face = faceCascade.detectMultiScale(
+                gray,
+                scaleFactor=1.1,
+                minNeighbors=5,
+                minSize=(30, 30),
+                flags=cv2.CASCADE_SCALE_IMAGE
+            )
+            faces.append(face)
 
-        # Draw a rectangle around the faces
-        for (x, y, w, h) in faces:
-            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            print("Found {0} faces!".format(len(face)))
+            if(len(face) == 1):
+                # Draw a rectangle around the faces
+                for (x, y, w, h) in face:
+                    frame = image[y:y + h, x:x + w]
+                cv2.imshow("Faces found", frame)
+                cv2.waitKey(2)
+
+                status = cv2.imwrite('/home/sharif/Master/deep_learning/deeplearning/extr/faces_detected' + str(i) +
+                                     '.jpg', frame)
+                i = i+1
 
         pass
 
