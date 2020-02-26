@@ -10,8 +10,9 @@ import matplotlib.image as mpimg
 if __name__ == '__main__':
 
     dt = data.Data()
-    data, labels = dt.load_data_test()
-    dingutje = model.LeNet()
-    dingutje.model_test(data, labels)
+    dt.face_extr()
+    #train_data, train_labels, test_data, test_labels = dt.load_data_test()
+    #dingutje = model.LeNet()
+    #dingutje.model_test(train_data, train_labels, test_data, test_labels)
 
     print("BUGSTOPP")

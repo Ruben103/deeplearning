@@ -10,3 +10,4 @@ argparse
 opencv-python
 imutils
 scikit-learn
+opencv-utils
