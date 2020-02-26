@@ -27,13 +27,16 @@ name_list = ['Sharif', 'Robin', 'Vincent', 'Pelle']
 cols = ['pix' + str(i) for i in range(27648)]
 MAX_SIZE = (256, 192)
 
+
+
+
 class Data():
 
 
     def face_extr(self):
         faceCascade = cv2.CascadeClassifier('/home/sharif/Master/deep_learning/deeplearning/'
                                             'haarcascade_frontalface_default.xml')
-        imagePaths = sorted(list(paths.list_images("new_images/sharif/")))
+        imagePaths = sorted(list(paths.list_images("new_images/vincent/")))
 
         faces = []
         i = 1
@@ -50,14 +53,17 @@ class Data():
             faces.append(face)
 
             print("Found {0} faces!".format(len(face)))
-            if(len(face) == 1):
-                # Draw a rectangle around the faces
+            if(len(face) > 0):
+                p = 0
+                # extract largest face found
                 for (x, y, w, h) in face:
-                    frame = image[y:y + h, x:x + w]
+                    if(w+h > p):
+                        frame = image[y:y + h, x:x + w]
+                        p = w+h
                 cv2.imshow("Faces found", frame)
-                cv2.waitKey(2)
+                cv2.waitKey(1)
 
-                status = cv2.imwrite('/home/sharif/Master/deep_learning/deeplearning/extr/faces_detected' + str(i) +
+                status = cv2.imwrite('/home/sharif/Master/deep_learning/deeplearning/extr_vincent/faces_detected' + str(i) +
                                      '.jpg', frame)
                 i = i+1
 
