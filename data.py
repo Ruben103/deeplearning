@@ -63,7 +63,7 @@ class Data():
 
         pass
 
-    def load_data_test(self):
+    def load_data_test(self, toggle_large_data):
 
         train_data = []
         train_labels = []
@@ -78,7 +78,11 @@ class Data():
             for imagePath in imagePaths:
                 # load the image, pre-process it, and store it in the data list
                 image = cv2.imread(imagePath)
-                image = cv2.resize(image, (64, 48))
+                if toggle_large_data:
+                    width = 192; height = 256
+                else:
+                    width = 48; height = 64
+                image = cv2.resize(image, (width, height))
                 image = img_to_array(image)
                 if(i < 4):
                     train_data.append(image)
@@ -99,7 +103,27 @@ class Data():
         shuffle(train_data, train_labels)
         shuffle(test_data, test_labels)
 
-        return train_data, train_labels, test_data, test_labels
+        return train_data, train_labels, test_data, test_labels, width, height
+
+    def load_full_data(self):
+
+        data = []
+
+        # grab the image paths and randomly shuffle them
+        # loop over the input images
+        for i in range(4):
+            imagePaths = sorted(list(paths.list_images(image_paths[i])))
+            l = len(imagePaths)
+            for imagePath in imagePaths:
+                # load the image, pre-process it, and store it in the data list
+                image = cv2.imread(imagePath)
+                image = img_to_array(image)
+                data.append(image)
+
+        # scale the raw pixel intensities to the range [0, 1]
+        data = np.array(data, dtype="float") / 255.0
+
+        return data
 
 
 
