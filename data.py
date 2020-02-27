@@ -32,7 +32,7 @@ class Data():
     def face_extr(self):
         faceCascade = cv2.CascadeClassifier('/home/sharif/Master/deep_learning/deeplearning/'
                                             'haarcascade_frontalface_default.xml')
-        imagePaths = sorted(list(paths.list_images("new_images/vincent/")))
+        imagePaths = sorted(list(paths.list_images("test_images/Vincent/")))
 
         faces = []
         i = 1
@@ -59,7 +59,7 @@ class Data():
                 cv2.imshow("Faces found", frame)
                 cv2.waitKey(1)
 
-                status = cv2.imwrite('/home/sharif/Master/deep_learning/deeplearning/extr_vincent/faces_detected' + str(i) +
+                status = cv2.imwrite('/home/sharif/Master/deep_learning/deeplearning/test_extr_vincent/faces_detected' + str(i) +
                                      '.jpg', frame)
                 i = i+1
 
