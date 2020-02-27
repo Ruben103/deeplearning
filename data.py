@@ -26,9 +26,6 @@ name_list = ['Sharif', 'Robin', 'Vincent', 'Pelle']
 cols = ['pix' + str(i) for i in range(27648)]
 MAX_SIZE = (256, 192)
 
-
-
-
 class Data():
 
 
@@ -118,13 +115,12 @@ class Data():
             for imagePath in imagePaths:
                 # load the image, pre-process it, and store it in the data list
                 image = cv2.imread(imagePath)
-                image = img_to_array(image)
                 data.append(image)
 
         # scale the raw pixel intensities to the range [0, 1]
-        data = np.array(data, dtype="float") / 255.0
+        dat = np.array(data) / 255.0
 
-        return data
+        return dat
 
 
 

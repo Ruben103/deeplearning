@@ -68,8 +68,8 @@ class LeNet:
         # return the constructed network architecture
         return model
 
-    def model_test(self, data, labels):
-        EPOCHS = 25
+    def model_test(self, data, labels, toggleaug, width, height):
+        EPOCHS = 5
         INIT_LR = 1e-3
         BS = 32
 
@@ -82,13 +82,16 @@ class LeNet:
         testY = to_categorical(testY, num_classes=4)
 
         # construct the image generator for data augmentation
-        aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1,
-                                 height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
-                                 horizontal_flip=True, fill_mode="nearest")
+        if toggleaug:
+            aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1,
+                                     height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
+                                     horizontal_flip=True, fill_mode="nearest")
+        else:
+            aug = ImageDataGenerator()
 
         # initialize the model
         print("[INFO] compiling model...")
-        model = LeNet.build(width=48, height=64, depth=3, classes=4)
+        model = LeNet.build(width=width, height=height, depth=3, classes=4)
         opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
         model.compile(loss="binary_crossentropy", optimizer=opt,
                       metrics=["accuracy"])

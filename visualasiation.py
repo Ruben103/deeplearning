@@ -4,10 +4,6 @@ import data
 import cv2
 from keras.preprocessing.image import img_to_array
 
-def show_face(image):
-    return plt.imshow(image)
-
-
 def multi(data):
     f = plt.figure()
     f.cmap = 'gray'
