@@ -68,15 +68,15 @@ class LeNet:
         # return the constructed network architecture
         return model
 
-    def model_test(self, data, labels, toggleaug, width, height):
+    def model_test(self, trainX, trainY, testX, testY, toggleaug, width, height):
         EPOCHS = 5
-        INIT_LR = 1e-3
-        BS = 32
+        INIT_LR = 1e-4
+        BS = 60
 
         # partition the data into training and testing splits using 75% of
         # the data for training and the remaining 25% for testing
-        (trainX, testX, trainY, testY) = train_test_split(data,
-                                                          labels, test_size=0.25, random_state=42)
+        #(trainX, testX, trainY, testY) = train_test_split(data,
+         #                                                 labels, test_size=0.25, random_state=42)
         # convert the labels from integers to vectors
         trainY = to_categorical(trainY, num_classes=4)
         testY = to_categorical(testY, num_classes=4)
