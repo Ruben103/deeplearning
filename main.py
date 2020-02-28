@@ -11,6 +11,8 @@ architect = 0 # 0 == architecture 2
 if __name__ == '__main__':
 
     dat = dt.Data()
+
+    # toggle to see how faces are extracted.
     # dat.face_extr()
 
     # toggle comment to visualize the data
