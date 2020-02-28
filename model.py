@@ -1,26 +1,4 @@
-import keras
-import data
-from keras.layers import LeakyReLU, Activation, Dense, Flatten, Conv2D, Conv1D, MaxPooling2D, Dropout
-
-import data as dt
-
-import numpy as np
-import pandas as pd
-import os
-from scipy import misc
-from scipy import ndimage
-from PIL import Image
-import matplotlib.pyplot as plt
-from skimage.color import rgb2gray
 from keras.utils import to_categorical
-from sklearn.model_selection import train_test_split
-
-import argparse
-import random
-import cv2
-import os
-from imutils import paths
-from keras.preprocessing.image import img_to_array
 
 DIMENSIONS = (256, 192, 1)
 
@@ -40,36 +18,66 @@ from keras.preprocessing.image import ImageDataGenerator
 class LeNet:
     @staticmethod
 
-    def build(width, height, depth, classes):
-        # initialize the model
-        model = Sequential()
-        inputShape = (height, width, depth)
-        # if we are using "channels first", update the input shape
-        if K.image_data_format() == "channels_first":
-            inputShape = (depth, height, width)
+    def build(width, height, depth, classes, architect):
+        activation = 'selu'
 
-        # first set of CONV => RELU => POOL layers
-        model.add(Conv2D(20, (5, 5), padding="same",
-                         input_shape=inputShape))
-        model.add(Activation("relu"))
-        model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
-        # second set of CONV => RELU => POOL layers
-        model.add(Conv2D(50, (5, 5), padding="same"))
-        model.add(Activation("relu"))
-        model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+        if architect:
+            # initialize the model
+            model = Sequential()
+            inputShape = (height, width, depth)
+            # if we are using "channels first", update the input shape
+            if K.image_data_format() == "channels_first":
+                inputShape = (depth, height, width)
 
-        # first (and only) set of FC => RELU layers
-        model.add(Flatten())
-        model.add(Dense(500))
-        model.add(Activation("relu"))
-        # softmax classifier
-        model.add(Dense(classes))
-        model.add(Activation("softmax"))
-        # return the constructed network architecture
+            model.add(Conv2D(20, (5, 5), padding="same",
+                             input_shape=inputShape))
+            model.add(Activation(activation))
+            model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+
+            # first set of CONV => RELU => POOL layers
+            model.add(Conv2D(20, (3, 3), padding="same",
+                             input_shape=inputShape))
+            model.add(Activation(activation))
+            model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+
+            # second set of CONV => RELU => POOL layers
+            model.add(Conv2D(50, (2, 2), padding="same"))
+            model.add(Activation(activation))
+            model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+
+            # first (and only) set of FC => RELU layers
+            model.add(Flatten())
+            model.add(Dense(500))
+            model.add(Activation(activation))
+            # softmax classifier
+            model.add(Dense(classes))
+            model.add(Activation("softmax"))
+            # return the constructed network architecture
+        else:
+            model = Sequential()
+            inputShape = (height, width, depth)
+            # if we are using "channels first", update the input shape
+            if K.image_data_format() == "channels_first":
+                inputShape = (depth, height, width)
+
+            # first set of CONV => RELU => POOL layers
+            model.add(Conv2D(20, (3, 3), padding="same",
+                             input_shape=inputShape))
+            model.add(Activation("relu"))
+            model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+
+            # first (and only) set of FC => RELU layers
+            model.add(Flatten())
+            model.add(Dense(500))
+            model.add(Activation("relu"))
+            # softmax classifier
+            model.add(Dense(classes))
+            model.add(Activation("softmax"))
+            # return the constructed network architecture
         return model
 
-    def model_test(self, trainX, trainY, testX, testY, toggleaug, width, height):
-        EPOCHS = 5
+    def model_test(self, trainX, trainY, testX, testY, toggleaug, width, height, architect):
+        EPOCHS = 10
         INIT_LR = 1e-4
         BS = 60
 
@@ -91,7 +99,7 @@ class LeNet:
 
         # initialize the model
         print("[INFO] compiling model...")
-        model = LeNet.build(width=width, height=height, depth=3, classes=4)
+        model = LeNet.build(width=width, height=height, depth=3, classes=4, architect=architect)
         opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
         model.compile(loss="binary_crossentropy", optimizer=opt,
                       metrics=["accuracy"])

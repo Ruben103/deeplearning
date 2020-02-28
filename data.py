@@ -1,24 +1,9 @@
 import numpy as np
-import pandas as pd
-import os
-from scipy import misc
-from scipy import ndimage
-from PIL import Image
-import matplotlib.pyplot as plt
-from skimage.color import rgb2gray
-from keras.utils import to_categorical
-from sklearn.model_selection import train_test_split
-
-import argparse
-import random
 import cv2
-from cv2 import cvtColor
 import os
 from imutils import paths
 from keras.preprocessing.image import img_to_array
 from sklearn.utils import shuffle
-import sys
-
 
 image_path = "Train_images/Sharif/"
 image_paths = ["extr_pelle", "extr_robin",  "extr_sharif", "extr_vincent", "test_extr_pelle", "test_extr_robin",
@@ -31,42 +16,48 @@ class Data():
 
 
     def face_extr(self):
-        faceCascade = cv2.CascadeClassifier('/home/sharif/Master/deep_learning/deeplearning/'
-                                            'haarcascade_frontalface_default.xml')
-        imagePaths = sorted(list(paths.list_images("test_images/Vincent/")))
+        faceCascade = cv2.CascadeClassifier(os.getcwd() +
+                                            '/haarcascade_frontalface_default.xml')
+        for name in name_list:
+            imagePaths = sorted(list(paths.list_images("test_images_raw" + '/' + name)))
 
-        faces = []
-        i = 1
-        for imagepath in imagePaths:
-            image = cv2.imread(imagepath)
-            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            face = faceCascade.detectMultiScale(
-                gray,
-                scaleFactor=1.1,
-                minNeighbors=5,
-                minSize=(30, 30),
-                flags=cv2.CASCADE_SCALE_IMAGE
-            )
-            faces.append(face)
+            faces = []
+            i = 1
+            for imagepath in imagePaths:
+                image = cv2.imread(imagepath)
+                gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                face = faceCascade.detectMultiScale(
+                    gray,
+                    scaleFactor=1.1,
+                    minNeighbors=5,
+                    minSize=(30, 30),
+                    flags=cv2.CASCADE_SCALE_IMAGE
+                )
+                faces.append(face)
 
-            print("Found {0} faces!".format(len(face)))
-            if(len(face) > 0):
-                p = 0
-                # extract largest face found
-                for (x, y, w, h) in face:
-                    if(w+h > p):
-                        frame = image[y:y + h, x:x + w]
-                        p = w+h
-                cv2.imshow("Faces found", frame)
-                cv2.waitKey(1)
+                print("Found {0} faces!".format(len(face)))
+                if(len(face) > 0):
+                    p = 0
+                    # extract largest face found
+                    for (x, y, w, h) in face:
+                        if(w+h > p):
+                            frame = image[y:y + h, x:x + w]
+                            p = w+h
+                    cv2.imshow("Faces found", frame)
+                    cv2.waitKey(1)
 
-                status = cv2.imwrite('/home/sharif/Master/deep_learning/deeplearning/test_extr_vincent/faces_detected' + str(i) +
-                                     '.jpg', frame)
-                i = i+1
+                    status = cv2.imwrite('/home/sharif/Master/deep_learning/deeplearning/test_extr_vincent/faces_detected' + str(i) +
+                                         '.jpg', frame)
+                    status = cv2.imwrite(
+                        os.getcwd() + "/extraced_faces" +"/test_extr_" + "name" + "/faces_detected" + str(i) +
+                        '.jpg', frame)
+                    i = i+1
 
         pass
 
     def load_data_test(self, toggle_large_data):
+
+        print(os.getcwd())
 
         train_data = []
         train_labels = []
@@ -79,6 +70,7 @@ class Data():
             imagePaths = sorted(list(paths.list_images(image_paths[i])))
             l = len(imagePaths)
             for imagePath in imagePaths:
+
                 # load the image, pre-process it, and store it in the data list
                 image = cv2.imread(imagePath)
                 if toggle_large_data:
@@ -91,7 +83,8 @@ class Data():
                     train_data.append(image)
                 else:
                     test_data.append(image)
-            # labels list
+
+                # labels list
                 if(i < 4):
                     np.repeat(train_labels.append(i), l)
                 else:
