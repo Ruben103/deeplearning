@@ -10,6 +10,10 @@ The classifier trains on proper photos of faces and is tested on more difficult 
 
 ![Alt text](./Images/lenet_architecture-768x226.png?raw=True "LeNet Architecture")
 
+### Code base
+The code can be downloaded from the public git repository
+[here](https://github.com/Ruben103/deeplearning)
+
 ### Run Instructions
 Command to install the packages: <br>
 ```pip3 install -r requirements.txt```
