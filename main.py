@@ -10,13 +10,12 @@ architect = 0 # 0 == architecture 2
 
 if __name__ == '__main__':
 
-    print(os.getcwd())
-
     dat = dt.Data()
+    # dat.face_extr()
 
     # toggle comment to visualize the data
-    # data_full = dat.load_full_data()
-    # vis.multi(data_full)
+    data_full = dat.load_full_data()
+    vis.multi(data_full)
 
     # function to return the data
     train_data, train_labels, test_data, test_labels, width, height = dat.load_data_test(toggle_large_data)

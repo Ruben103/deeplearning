@@ -6,8 +6,9 @@ from keras.preprocessing.image import img_to_array
 from sklearn.utils import shuffle
 
 image_path = "Train_images/Sharif/"
-image_paths = ["extr_pelle", "extr_robin",  "extr_sharif", "extr_vincent", "test_extr_pelle", "test_extr_robin",
-               "test_extr_sharif", "test_extr_vincent"]
+image_paths = ["extracted_faces/extr_pelle", "extracted_faces/extr_robin",  "extracted_faces/extr_sharif",
+               "extracted_faces/extr_vincent", "textracted_faces/est_extr_pelle", "extracted_faces/test_extr_robin",
+               "extracted_faces/test_extr_sharif", "extracted_faces/test_extr_vincent"]
 name_list = ['Sharif', 'Robin', 'Vincent', 'Pelle']
 cols = ['pix' + str(i) for i in range(27648)]
 MAX_SIZE = (256, 192)
@@ -16,8 +17,10 @@ class Data():
 
 
     def face_extr(self):
-        faceCascade = cv2.CascadeClassifier(os.getcwd() +
-                                            '/haarcascade_frontalface_default.xml')
+        osgetcwd = os.getcwd()
+        path = os.path.join(osgetcwd, '/haarcascade_frontalface_default.xml')
+        faceCascade = cv2.CascadeClassifier(path)
+
         for name in name_list:
             imagePaths = sorted(list(paths.list_images("test_images_raw" + '/' + name)))
 
@@ -46,10 +49,10 @@ class Data():
                     cv2.imshow("Faces found", frame)
                     cv2.waitKey(1)
 
-                    status = cv2.imwrite('/home/sharif/Master/deep_learning/deeplearning/test_extr_vincent/faces_detected' + str(i) +
-                                         '.jpg', frame)
-                    status = cv2.imwrite(
-                        os.getcwd() + "/extraced_faces" +"/test_extr_" + "name" + "/faces_detected" + str(i) +
+                    # status = cv2.imwrite('/home/sharif/Master/deep_learning/deeplearning/test_extr_vincent/faces_detected' + str(i) +
+                    #                      '.jpg', frame)
+                    new_path = os.path.join(os.getcwd(), "/extraced_faces", "/test_extr_" + "name", "/faces_detected")
+                    status = cv2.imwrite(new_path + str(i) +
                         '.jpg', frame)
                     i = i+1
 
